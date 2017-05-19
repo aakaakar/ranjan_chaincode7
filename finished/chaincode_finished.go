@@ -21,14 +21,12 @@ import (
 	"fmt"
 
 	"log"
-
 	"os"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 
 	"github.com/cloudfoundry-community/go-cfenv"
 	"github.com/gin-gonic/gin"
-
 )
 import "github.com/timjacobi/go-couchdb"
 
@@ -132,6 +130,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	r.POST("/api/visitors", func(c *gin.Context) {
 		var visitor Visitor
 		if c.BindJSON(&visitor) == nil {
+			visitor.Name = "1231"
 			cloudant.DB(dbName).Post(visitor)
 			c.String(200, "Hello "+visitor.Name)
 		}
