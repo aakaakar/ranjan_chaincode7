@@ -23,10 +23,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-
-	"github.com/cloudfoundry-community/go-cfenv"
 	"github.com/gin-gonic/gin"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 import "github.com/timjacobi/go-couchdb"
 
@@ -112,14 +110,6 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		log.Println(".env file does not exist")
 	}
 	cloudantUrl := "https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com"
-
-	appEnv, _ := cfenv.Current()
-	if appEnv != nil {
-		cloudantService, _ := appEnv.Services.WithLabel("cloudantNoSQLDB")
-		if len(cloudantService) > 0 {
-			cloudantUrl = cloudantService[0].Credentials["url"].(string)
-		}
-	}
 
 	cloudant, err := couchdb.NewClient(cloudantUrl, nil)
 	if err != nil {
