@@ -21,14 +21,14 @@ import (
 	"fmt"
 
 	"log"
-	"net/http"
+
 	"os"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 
 	"github.com/cloudfoundry-community/go-cfenv"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+
 )
 import "github.com/timjacobi/go-couchdb"
 
