@@ -1,12 +1,9 @@
 /*
 Copyright IBM Corp 2016 All Rights Reserved.
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
-
 		 http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,25 +20,13 @@ import (
 	"log"
 	"os"
 
-	"https://github.com/aakaakar/gin"
+	"github.com/gin-gonic/gin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/timjacobi/go-couchdb"
 )
-import "https://github.com/aakaakar/go-couchdb"
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
-}
-
-type Visitor struct {
-	Name string `json:"name"`
-}
-
-type Visitors []Visitor
-
-type alldocsResult struct {
-	TotalRows int `json:"total_rows"`
-	Offset    int
-	Rows      []map[string]interface{}
 }
 
 func main() {
@@ -88,54 +73,52 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	if function == "read" { //read a variable
 		return t.read(stub, args)
 	}
+	if function == "my_ledger" { //read a variable
+		r := gin.Default()
+		var dbName = "test_db"
+
+		cloudantUrl := "https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com"
+
+		cloudant, err := couchdb.NewClient(cloudantUrl, nil)
+		if err != nil {
+			log.Println("Can not connect to Cloudant database")
+		}
+
+		cloudant.CreateDB(dbName)
+
+		r.POST("", func(c *gin.Context) {
+			cloudant.DB(dbName).Post("test:value")
+			c.String(200, "Succesfully posted")
+
+		})
+
+		//When running on Bluemix, get the PORT from the environment variable.
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080" //Local
+		}
+		r.Run(":" + port)
+
+	}
+
 	fmt.Println("query did not find func: " + function)
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
 
 // write - invoke function to write key/value pair
-
 func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	//var key, value string
+	var key, value string
 	var err error
 	fmt.Println("running write()")
-	r := gin.Default()
-	r.StaticFile("/", "./static/index.html")
-	r.Static("/static", "./static")
-	var dbName = "mydb"
 
-	//When running locally, get credentials from .env file.
-	//err := godotenv.Load()
-	if err != nil {
-		log.Println(".env file does not exist")
-	}
-	cloudantUrl := "https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com"
-
-	cloudant, err := couchdb.NewClient(cloudantUrl, nil)
-	if err != nil {
-		log.Println("Can not connect to Cloudant database")
-	}
-	cloudant.CreateDB(dbName)
-
-	r.POST("/api/visitors", func(c *gin.Context) {
-		var visitor Visitor
-		if c.BindJSON(&visitor) == nil {
-			visitor.Name = "1231"
-			cloudant.DB(dbName).Post(visitor)
-			c.String(200, "Hello "+visitor.Name)
-		}
-	})
-
-	port := os.Getenv("PORT")
-
-	r.Run(":" + port)
 	if len(args) != 2 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 	}
 
-	//key = args[0] //rename for funsies
-	//value = args[1]
-	err = stub.PutState("wingardium", []byte("leviosa")) //write the variable into the chaincode state
+	key = args[0] //rename for funsies
+	value = args[1]
+	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 	if err != nil {
 		return nil, err
 	}
