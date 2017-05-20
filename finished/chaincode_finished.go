@@ -23,7 +23,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gin-gonic/gin"
+	"https://github.com/aakaakar/gin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 import "https://github.com/aakaakar/go-couchdb"
