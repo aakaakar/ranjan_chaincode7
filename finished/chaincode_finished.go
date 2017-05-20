@@ -26,7 +26,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
-import "github.com/timjacobi/go-couchdb"
+import "https://github.com/aakaakar/go-couchdb"
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
