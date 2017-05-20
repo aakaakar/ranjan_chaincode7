@@ -17,16 +17,19 @@ import (
 	"errors"
 	"fmt"
 
-	"log"
-	"os"
+	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/timjacobi/go-couchdb"
+	"github.com/rhinoman/couchdb-go"
 )
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
+}
+
+type TestDocument struct {
+	Title string
+	Note  string
 }
 
 func main() {
@@ -73,33 +76,6 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	if function == "read" { //read a variable
 		return t.read(stub, args)
 	}
-	if function == "my_ledger" { //read a variable
-		r := gin.Default()
-		var dbName = "test_db"
-
-		cloudantUrl := "https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com"
-
-		cloudant, err := couchdb.NewClient(cloudantUrl, nil)
-		if err != nil {
-			log.Println("Can not connect to Cloudant database")
-		}
-
-		cloudant.CreateDB(dbName)
-
-		r.POST("", func(c *gin.Context) {
-			cloudant.DB(dbName).Post("test:value")
-			c.String(200, "Succesfully posted")
-
-		})
-
-		//When running on Bluemix, get the PORT from the environment variable.
-		port := os.Getenv("PORT")
-		if port == "" {
-			port = "8080" //Local
-		}
-		r.Run(":" + port)
-
-	}
 
 	fmt.Println("query did not find func: " + function)
 
@@ -119,6 +95,25 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	key = args[0] //rename for funsies
 	value = args[1]
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+
+	var timeout = time.Duration(500 * time.Millisecond)
+	conn, err := couchdb.NewConnection("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com/test_db/_security", 5984, timeout)
+	auth := couchdb.BasicAuth{Username: "attaidifieveredgedatingi", Password: "85363815ee8b0396585f5cf7d3a12508aba2a3d2"}
+	db := conn.SelectDB("test_db", &auth)
+
+	theDoc := TestDocument{
+		Title: "My Document",
+		Note:  "This is a note",
+	}
+
+	theId := "qwerty123456"
+
+	rev, err := db.Save(theDoc, theId, "")
+
+	if rev != "" {
+		return nil, nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
