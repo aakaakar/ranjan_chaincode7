@@ -1,0 +1,18 @@
+{
+	"ImportPath": "github.com/IBM-Bluemix/code/finished",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/hyperledger/fabric/core/chaincode/shim",
+			"Rev": "40c47a53568ed07bfa16dfc692773ff3752fd645"
+		},
+		{
+			"ImportPath": "github.com/rhinoman/couchdb-go",
+			"Rev": "6b9c4d96f414f6e8a9bc986cef56e2d19f18fd37"
+		}
+	]
+}
