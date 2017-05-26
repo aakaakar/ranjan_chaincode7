@@ -17,7 +17,10 @@ import (
 	"errors"
 	"fmt"
 
+	"time"
+
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/rhinoman/couchdb-go"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -93,8 +96,8 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	value = args[1]
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 
-	/*var timeout = time.Duration(500 * time.Millisecond)
-	conn, err := couchdb.NewConnection("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com/test_db/_security", 5984, timeout)
+	var timeout = time.Duration(500 * time.Millisecond)
+	conn, err := couchdb.NewConnection("ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com", 0, timeout)
 	auth := couchdb.BasicAuth{Username: "attaidifieveredgedatingi", Password: "85363815ee8b0396585f5cf7d3a12508aba2a3d2"}
 	db := conn.SelectDB("test_db", &auth)
 
@@ -103,13 +106,13 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		Note:  "This is a note",
 	}
 
-	theId := "qwerty123456"
+	theId := "attaidifieveredgedatingi"
 
 	rev, err := db.Save(theDoc, theId, "")
 
 	if rev != "" {
 		return nil, nil
-	}*/
+	}
 
 	if err != nil {
 		return nil, err
