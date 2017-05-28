@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/IBM-Bluemix/code/finished",
+	"ImportPath": "github.com/IBM-Bluemix/ranjan_chaincode3/finished",
 	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
 	"Packages": [
@@ -7,8 +7,20 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/rhinoman/couchdb-go",
-			"Rev": "6b9c4d96f414f6e8a9bc986cef56e2d19f18fd37"
+			"ImportPath": "github.com/IBM-Bluemix/go-cloudant",
+			"Rev": "a238781fac2d8a89decc9100e37ef36b92de07fd"
+		},
+		{
+			"ImportPath": "github.com/davecgh/go-spew/spew",
+			"Rev": "7da13102bcb99127a98bda24649e94e6414d4b6a"
+		},
+		{
+			"ImportPath": "github.com/pmezard/go-difflib/difflib",
+			"Rev": "e0757a8c7953f0c8b8b8b738ebc240a4ddf6d21f"
+		},
+		{
+			"ImportPath": "github.com/stretchr/testify/assert",
+			"Rev": "062a41bd2d205b62645c591302806c1da71859ca"
 		}
 	]
 }

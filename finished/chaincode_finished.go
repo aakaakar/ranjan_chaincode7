@@ -17,10 +17,8 @@ import (
 	"errors"
 	"fmt"
 
-	"time"
-
+	"github.com/IBM-Bluemix/go-cloudant"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/rhinoman/couchdb-go"
 )
 
 // SimpleChaincode example simple Chaincode implementation
@@ -96,23 +94,34 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	value = args[1]
 	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 
-	var timeout = time.Duration(500 * time.Millisecond)
-	conn, err := couchdb.NewConnection("ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com", 0, timeout)
-	auth := couchdb.BasicAuth{Username: "attaidifieveredgedatingi", Password: "85363815ee8b0396585f5cf7d3a12508aba2a3d2"}
-	db := conn.SelectDB("test_db", &auth)
+	fmt.Println("****** Starting to send information to my ledger")
 
-	theDoc := TestDocument{
-		Title: "My Document",
-		Note:  "This is a note",
+	type data struct {
+		ID   string `json:"tax_id"`
+		Name string `json:"name"`
+	}
+	testData := &data{
+		ID:   "1453",
+		Name: "constantinople",
 	}
 
-	theId := "attaidifieveredgedatingi"
+	fmt.Println("****** Starting to create my client")
 
-	rev, err := db.Save(theDoc, theId, "")
+	client, error := cloudant.NewClient("attaidifieveredgedatingi", "85363815ee8b0396585f5cf7d3a12508aba2a3d2")
 
-	if rev != "" {
-		return nil, nil
-	}
+	fmt.Println("****** Completed creating my client, ensuring db exists")
+
+	fmt.Println("**** Error while creating client: " + error.Error())
+
+	client.CreateDB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println("****** Completed ensuring db exists, creating DB object with url- https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	dbObj := client.DB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println(" ******** got DB object dbObj, creating document by calling dbObj.CreateDocument(testData)")
+
+	dbObj.CreateDocument(testData)
 
 	if err != nil {
 		return nil, err
