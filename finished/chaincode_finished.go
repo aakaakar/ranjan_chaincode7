@@ -25,13 +25,38 @@ import (
 type SimpleChaincode struct {
 }
 
-type TestDocument struct {
-	Title string
-	Note  string
-}
-
 func main() {
 	err := shim.Start(new(SimpleChaincode))
+
+	fmt.Println("****** Starting to send information to my ledger")
+
+	type data struct {
+		ID   string `json:"tax_id"`
+		Name string `json:"name"`
+	}
+	testData := &data{
+		ID:   "1453",
+		Name: "constantinople",
+	}
+
+	fmt.Println("****** Starting to create my client")
+
+	client, error := cloudant.NewClient("attaidifieveredgedatingi", "85363815ee8b0396585f5cf7d3a12508aba2a3d2")
+
+	fmt.Println("****** Completed creating my client, ensuring db exists")
+
+	fmt.Println("**** Error while creating client: " + error.Error())
+
+	client.CreateDB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println("****** Completed ensuring db exists, creating DB object with url- https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	dbObj := client.DB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println(" ******** got DB object dbObj, creating document by calling dbObj.CreateDocument(testData)")
+
+	dbObj.CreateDocument(testData)
+
 	if err != nil {
 		fmt.Printf("Error starting Simple chaincode: %s", err)
 	}
@@ -44,6 +69,36 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	}
 
 	err := stub.PutState("hello_world", []byte(args[0]))
+
+	fmt.Println("****** Starting to send information to my ledger")
+
+	type data struct {
+		ID   string `json:"tax_id"`
+		Name string `json:"name"`
+	}
+	testData := &data{
+		ID:   "1453",
+		Name: "constantinople",
+	}
+
+	fmt.Println("****** Starting to create my client")
+
+	client, error := cloudant.NewClient("attaidifieveredgedatingi", "85363815ee8b0396585f5cf7d3a12508aba2a3d2")
+
+	fmt.Println("****** Completed creating my client, ensuring db exists")
+
+	fmt.Println("**** Error while creating client: " + error.Error())
+
+	client.CreateDB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println("****** Completed ensuring db exists, creating DB object with url- https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	dbObj := client.DB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
+
+	fmt.Println(" ******** got DB object dbObj, creating document by calling dbObj.CreateDocument(testData)")
+
+	dbObj.CreateDocument(testData)
+
 	if err != nil {
 		return nil, err
 	}
