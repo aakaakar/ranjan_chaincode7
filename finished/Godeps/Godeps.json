@@ -15,12 +15,28 @@
 			"Rev": "7da13102bcb99127a98bda24649e94e6414d4b6a"
 		},
 		{
+			"ImportPath": "github.com/moul/http2curl",
+			"Rev": "6516d987c9b7c6bc9090fcaa971fc7a5a1a1c1d2"
+		},
+		{
+			"ImportPath": "github.com/parnurzeal/gorequest",
+			"Rev": "afc4d97ec10a0314dd364cfc2b341c31e2763e9f"
+		},
+		{
 			"ImportPath": "github.com/pmezard/go-difflib/difflib",
 			"Rev": "e0757a8c7953f0c8b8b8b738ebc240a4ddf6d21f"
 		},
 		{
 			"ImportPath": "github.com/stretchr/testify/assert",
 			"Rev": "062a41bd2d205b62645c591302806c1da71859ca"
+		},
+		{
+			"ImportPath": "github.com/timjacobi/go-couchdb",
+			"Rev": "a6784dc153e4e98930e53c8ebb0ca28a0cd42f5b"
+		},
+		{
+			"ImportPath": "golang.org/x/net/publicsuffix",
+			"Rev": "52905cf09f0e20ed5bdd662fff565aa12633febe"
 		}
 	]
 }
