@@ -23,6 +23,10 @@
 			"Rev": "afc4d97ec10a0314dd364cfc2b341c31e2763e9f"
 		},
 		{
+			"ImportPath": "github.com/pkg/errors",
+			"Rev": "53924786e53132e9937a6e822d76cd1c5de50f60"
+		},
+		{
 			"ImportPath": "github.com/pmezard/go-difflib/difflib",
 			"Rev": "e0757a8c7953f0c8b8b8b738ebc240a4ddf6d21f"
 		},
