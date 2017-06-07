@@ -14,12 +14,17 @@ limitations under the License.
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
-	"github.com/IBM-Bluemix/go-cloudant"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
+
+type MarketerStruct struct {
+	TaxId string   `json:"TaxId"`
+	Info  []string `json:"Info"`
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -57,8 +62,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	// Handle different functions
 	if function == "init" {
 		return t.Init(stub, "init", args)
-	} else if function == "lumos" {
-		return t.myMethod(stub, args)
+	} else if function == "write" {
+		return t.write(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -80,49 +85,22 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 }
 
 // write - invoke function to write key/value pair
-func (t *SimpleChaincode) myMethod(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
-	var key, value string
+	var key string
 	var err error
 
-	fmt.Println("****** Starting to send information to my ledger")
-
-	type data struct {
-		ID   string `json:"tax_id"`
-		Name string `json:"name"`
-	}
-	testData := &data{
-		ID:   "1453",
-		Name: "constantinople",
+	mktrStruct := MarketerStruct{
+		TaxId: args[0],
+		Info:  []string{args[1], args[2], args[3]},
 	}
 
-	fmt.Println("****** Starting to create my client")
+	mktrStructBytes, err := json.Marshal(mktrStruct)
+	_ = err //ignore errors
+	key = args[0]
+	stub.PutState(key, mktrStructBytes)
 
-	client, error := cloudant.NewClient("attaidifieveredgedatingi", "85363815ee8b0396585f5cf7d3a12508aba2a3d2")
-
-	fmt.Println("****** Completed creating my client, ensuring db exists")
-
-	fmt.Println("**** Error while creating client: " + error.Error())
-
-	client.CreateDB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
-
-	fmt.Println("****** Completed ensuring db exists, creating DB object with url- https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
-
-	dbObj := client.DB("https://ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix:9d794d83dc3913e7958a6ce546293269aab45ef097d5610b6eb43b9c6bf0bd7e@ab5e5a7c-76de-4d8a-8516-64e21e8c4042-bluemix.cloudant.com")
-
-	fmt.Println(" ******** got DB object dbObj, creating document by calling dbObj.CreateDocument(testData)")
-
-	dbObj.CreateDocument(testData)
-
-	fmt.Println("running write()")
-
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
-	}
-
-	key = args[0] //rename for funsies
-	value = args[1]
-	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+	fmt.Println("*** successfully wrote marketer to state")
 
 	if err != nil {
 		return nil, err
@@ -135,16 +113,17 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	var key, jsonResp string
 	var err error
 
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
-	}
-
+	var retrievedStruct MarketerStruct
 	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	retrievedBytes, err := stub.GetState(key)
+	json.Unmarshal(retrievedBytes, retrievedStruct)
+
+	fmt.Println("Retrieved struct: ", retrievedStruct)
+
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	return valAsbytes, nil
+	return retrievedBytes, nil
 }
