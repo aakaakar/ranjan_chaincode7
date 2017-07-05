@@ -22,8 +22,30 @@ import (
 )
 
 type MarketerStruct struct {
-	TaxId string   `json:"TaxId"`
-	Info  []string `json:"Info"`
+	EId                   string `json:"EId"`
+	TaxId                 string `json:"TaxId"`
+	BeginDate             string `json:"BeginDate"`
+	MarketerTypeFlag      string `json:"MarketerTypeFlag"`
+	MarketerType          string `json:"MarketerType"`
+	MarketerRole          string `json:"MarketerRole"`
+	MarketerStatus        string `json:"MarketerStatus"`
+	LegalName             string `json:"LegalName"`
+	Gender                string `json:"Gender"`
+	DoB                   string `json:"DoB"`
+	RegStateName          string `json:"RegStateName"`
+	MarketerEffectiveDate string `json:"MarketerEffectiveDate"`
+	MarketerEndDate       string `json:"MarketerEndDate"`
+	FirstName             string `json:"FirstName"`
+	LastName              string `json:"LastName"`
+	BusinessAddress       string `json:"BusinessAddress"`
+	City                  string `json:"City"`
+	State                 string `json:"State"`
+	PostalCode            string `json:"PostalCode"`
+	PhoneNumber           string `json:"PhoneNumber"`
+	EMail                 string `json:"EMail"`
+	MarketerEaRole        string `json:"“MarketerEaRole”"`
+	OwnerRole             string `json:"OwnerRole"`
+	OrgName               string `json:"OrgName"`
 }
 
 // SimpleChaincode example simple Chaincode implementation
@@ -91,8 +113,30 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	var err error
 
 	mktrStruct := MarketerStruct{
-		TaxId: args[0],
-		Info:  []string{args[1], args[2], args[3]},
+		EId:                   args[0],
+		TaxId:                 args[1],
+		BeginDate:             args[2],
+		MarketerTypeFlag:      args[3],
+		MarketerType:          args[4],
+		MarketerRole:          args[5],
+		MarketerStatus:        args[6],
+		LegalName:             args[7],
+		Gender:                args[8],
+		DoB:                   args[9],
+		RegStateName:          args[10],
+		MarketerEffectiveDate: args[11],
+		MarketerEndDate:       args[12],
+		FirstName:             args[13],
+		LastName:              args[14],
+		BusinessAddress:       args[15],
+		City:                  args[16],
+		State:                 args[17],
+		PostalCode:            args[18],
+		PhoneNumber:           args[19],
+		EMail:                 args[20],
+		MarketerEaRole:        args[21],
+		OwnerRole:             args[22],
+		OrgName:               args[23],
 	}
 
 	mktrStructBytes, err := json.Marshal(mktrStruct)
