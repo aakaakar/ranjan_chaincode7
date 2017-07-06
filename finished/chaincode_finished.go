@@ -21,6 +21,8 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
+type isval []byte
+
 type MarketerStruct struct {
 	EId                   string `json:"EId"`
 	TaxId                 string `json:"TaxId"`
@@ -142,13 +144,17 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	mktrStructBytes, err := json.Marshal(mktrStruct)
 	_ = err //ignore errors
 	key = args[0]
-	stub.PutState(key, mktrStructBytes)
+	//t.read(stub, args)
+	isval, err := t.read(stub, args)
+	if isval == nil {
+		stub.PutState(key, mktrStructBytes)
 
-	fmt.Println("*** successfully wrote marketer to state")
-
+		fmt.Println("*** successfully wrote marketer to state")
+	}
 	if err != nil {
 		return nil, err
 	}
+
 	return nil, nil
 }
 
