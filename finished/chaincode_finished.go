@@ -148,9 +148,9 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	isval, err := t.read(stub, args)
 	if isval == nil {
 		stub.PutState(key, mktrStructBytes)
-
 		fmt.Println("*** successfully wrote marketer to state")
 	} else {
+		fmt.Println("****duplicate entry")
 		return nil, errors.New("duplicate entry")
 	}
 	if err != nil {
