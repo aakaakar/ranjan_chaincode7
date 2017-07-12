@@ -150,6 +150,8 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		stub.PutState(key, mktrStructBytes)
 
 		fmt.Println("*** successfully wrote marketer to state")
+	} else {
+		return nil, errors.New("duplicate entry")
 	}
 	if err != nil {
 		return nil, errors.New("duplicate entry")
