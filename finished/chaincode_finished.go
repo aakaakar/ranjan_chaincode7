@@ -50,6 +50,51 @@ type MarketerStruct struct {
 	OrgName               string `json:"OrgName"`
 }
 
+type AccountStruct struct {
+	policyPrefix               string `json:"policyPrefix"`
+	accountNumber              string `json:"accountNumber"`
+	internalAccountName        string `json:"internalAccountName"`
+	accountStatus              string `json:"accountStatus"`
+	accountStatusEffectiveDate string `json:"accountStatusEffectiveDate"`
+	validationStatus           string `json:"validationStatus"`
+	accountEffectiveDate       string `json:"accountEffectiveDate"`
+	marketerProduct            string `json:"marketerProduct"`
+	disclosureStatus           string `json:"disclosureStatus"`
+	disclosureEffectiveDate    string `json:"disclosureEffectiveDate"`
+}
+
+type AssignmentStruct struct {
+	AssignmentId            string `json:"AssignmentRoleType"`
+	AssignmentRoleType      string `json:"AssignmentRoleType"`
+	SplitPercentage         string `json:"SplitPercentage"`
+	AssignmentEffectiveDate string `json:"AssignmentEffectiveDate"`
+	AssignmentStatus        string `json:"AssignmentStatus"`
+	AssignmentEndDate       string `json:"AssignmentEndDate"`
+	SplitEffectiveDate      string `json:"SplitEffectiveDate"`
+	OwnerEId                string `json:"OwnerEId"`
+	OwnerRole               string `json:"OwnerRole"`
+	OrgName                 string `json:"OrgName"`
+	policyPrefix            string `json:"policyPrefix"`
+	accountNumber           string `json:"accountNumber"`
+	EId                     string `json:"EId"`
+	TaxId                   string `json:"TaxId"`
+	BeginDate               string `json:"BeginDate"`
+	MarketerTypeFlag        string `json:"MarketerTypeFlag"`
+	MarketerType            string `json:"MarketerType"`
+	MarketerRole            string `json:"MarketerRole"`
+	MarketerStatus          string `json:"MarketerStatus"`
+	LegalName               string `json:"LegalName"`
+	Gender                  string `json:"Gender"`
+	DoB                     string `json:"DoB"`
+	RegStateName            string `json:"RegStateName"`
+	MarketerEffectiveDate   string `json:"MarketerEffectiveDate"`
+	MarketerEndDate         string `json:"MarketerEndDate"`
+	FirstName               string `json:"FirstName"`
+	LastName                string `json:"LastName"`
+	EMail                   string `json:"EMail"`
+	MarketerEaRole          string `json:"“MarketerEaRole”"`
+}
+
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
@@ -88,6 +133,10 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
+	} else if function == "writeAcc" {
+		return t.writeAcc(stub, args)
+	} else if function == "assign" {
+		return t.assign(stub, args)
 	}
 	fmt.Println("invoke did not find func: " + function)
 
@@ -113,7 +162,6 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 	var key string
 	var err error
-	var dupMktr string = "Marketer exists!"
 
 	mktrStruct := MarketerStruct{
 		EId:                   args[0],
@@ -152,15 +200,91 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		fmt.Println("*** successfully wrote marketer to state")
 	} else {
 		fmt.Println("****duplicate entry")
-		dupErrMsg, _ := json.Marshal(dupMktr)
-		return dupErrMsg, errors.New("duplicate entry")
-	}
-	if err != nil {
-		dupErrMsg, _ := json.Marshal(dupMktr)
-		return dupErrMsg, errors.New("duplicate entry")
+		dupMktrArr := []byte("Marketer exists!")
+		return dupMktrArr, errors.New("duplicate entry")
 	}
 
-	return nil, nil
+	successMsgArr := []byte("Marketer added succesfully!")
+
+	return successMsgArr, nil
+}
+
+func (t *SimpleChaincode) writeAcc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+	var key string
+	var err error
+
+	accStruct := AccountStruct{
+		accountNumber:              args[0],
+		policyPrefix:               args[1],
+		internalAccountName:        args[2],
+		accountStatus:              args[3],
+		accountStatusEffectiveDate: args[4],
+		validationStatus:           args[5],
+		accountEffectiveDate:       args[6],
+		marketerProduct:            args[7],
+		disclosureStatus:           args[8],
+		disclosureEffectiveDate:    args[9],
+	}
+
+	accStructBytes, err := json.Marshal(accStruct)
+	_ = err //ignore errors
+	key = args[0]
+	stub.PutState(key, accStructBytes)
+	fmt.Println("*** successfully wrote account to state")
+
+	successMsgArr := []byte("Account added succesfully!")
+
+	return successMsgArr, nil
+}
+
+func (t *SimpleChaincode) assign(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+	var key string
+	var err error
+
+	assignStruct := AssignmentStruct{
+		AssignmentId:            args[0],
+		AssignmentRoleType:      args[1],
+		SplitPercentage:         args[2],
+		AssignmentEffectiveDate: args[3],
+		AssignmentStatus:        args[4],
+		AssignmentEndDate:       args[5],
+		SplitEffectiveDate:      args[6],
+		OwnerEId:                args[7],
+		OwnerRole:               args[8],
+		OrgName:                 args[9],
+		policyPrefix:            args[10],
+		accountNumber:           args[11],
+		EId:                     args[12],
+		TaxId:                   args[13],
+		BeginDate:               args[14],
+		MarketerTypeFlag:        args[15],
+		MarketerType:            args[16],
+		MarketerRole:            args[17],
+		MarketerStatus:          args[18],
+		LegalName:               args[19],
+		Gender:                  args[20],
+		DoB:                     args[21],
+		RegStateName:            args[22],
+		MarketerEffectiveDate:   args[23],
+		MarketerEndDate:         args[24],
+		FirstName:               args[25],
+		LastName:                args[26],
+		EMail:                   args[27],
+		MarketerEaRole:          args[28],
+	}
+
+	assignStructBytes, err := json.Marshal(assignStruct)
+	_ = err //ignore errors
+	key = args[0]
+
+	stub.PutState(key, assignStructBytes)
+	fmt.Println("*** successfully wrote assignemt to state")
+
+	successMsgArr := []byte("Assignment added succesfully!")
+
+	return successMsgArr, nil
 }
 
 // read - query function to read key/value pair
