@@ -51,20 +51,20 @@ type MarketerStruct struct {
 }
 
 type AccountStruct struct {
-	policyPrefix               string `json:"policyPrefix"`
-	accountNumber              string `json:"accountNumber"`
-	internalAccountName        string `json:"internalAccountName"`
-	accountStatus              string `json:"accountStatus"`
-	accountStatusEffectiveDate string `json:"accountStatusEffectiveDate"`
-	validationStatus           string `json:"validationStatus"`
-	accountEffectiveDate       string `json:"accountEffectiveDate"`
-	marketerProduct            string `json:"marketerProduct"`
-	disclosureStatus           string `json:"disclosureStatus"`
-	disclosureEffectiveDate    string `json:"disclosureEffectiveDate"`
+	AccountNumber              string `json:"AccountNumber"`
+	PolicyPrefix               string `json:"PolicyPrefix"`
+	InternalAccountName        string `json:"InternalAccountName"`
+	AccountStatus              string `json:"AccountStatus"`
+	AccountStatusEffectiveDate string `json:"AccountStatusEffectiveDate"`
+	ValidationStatus           string `json:"ValidationStatus"`
+	AccountEffectiveDate       string `json:"AccountEffectiveDate"`
+	MarketerProduct            string `json:"MarketerProduct"`
+	DisclosureStatus           string `json:"DisclosureStatus"`
+	DisclosureEffectiveDate    string `json:"DisclosureEffectiveDate"`
 }
 
 type AssignmentStruct struct {
-	AssignmentId            string `json:"AssignmentRoleType"`
+	AssignmentId            string `json:"AssignmentId"`
 	AssignmentRoleType      string `json:"AssignmentRoleType"`
 	SplitPercentage         string `json:"SplitPercentage"`
 	AssignmentEffectiveDate string `json:"AssignmentEffectiveDate"`
@@ -133,8 +133,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "write" {
 		return t.write(stub, args)
-	} else if function == "writeAcc" {
-		return t.writeAcc(stub, args)
+	} else if function == "account" {
+		return t.account(stub, args)
 	} else if function == "assign" {
 		return t.assign(stub, args)
 	}
@@ -209,22 +209,22 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 	return successMsgArr, nil
 }
 
-func (t *SimpleChaincode) writeAcc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *SimpleChaincode) account(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var key string
 	var err error
 
 	accStruct := AccountStruct{
-		accountNumber:              args[0],
-		policyPrefix:               args[1],
-		internalAccountName:        args[2],
-		accountStatus:              args[3],
-		accountStatusEffectiveDate: args[4],
-		validationStatus:           args[5],
-		accountEffectiveDate:       args[6],
-		marketerProduct:            args[7],
-		disclosureStatus:           args[8],
-		disclosureEffectiveDate:    args[9],
+		AccountNumber:              args[0],
+		PolicyPrefix:               args[1],
+		InternalAccountName:        args[2],
+		AccountStatus:              args[3],
+		AccountStatusEffectiveDate: args[4],
+		ValidationStatus:           args[5],
+		AccountEffectiveDate:       args[6],
+		MarketerProduct:            args[7],
+		DisclosureStatus:           args[8],
+		DisclosureEffectiveDate:    args[9],
 	}
 
 	accStructBytes, err := json.Marshal(accStruct)
