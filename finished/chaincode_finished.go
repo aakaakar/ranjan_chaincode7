@@ -113,6 +113,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 	var key string
 	var err error
+	var dupMktr string = "Marketer exists!"
 
 	mktrStruct := MarketerStruct{
 		EId:                   args[0],
@@ -151,10 +152,12 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		fmt.Println("*** successfully wrote marketer to state")
 	} else {
 		fmt.Println("****duplicate entry")
-		return nil, errors.New("duplicate entry")
+		dupErrMsg, _ := json.Marshal(dupMktr)
+		return dupErrMsg, errors.New("duplicate entry")
 	}
 	if err != nil {
-		return nil, errors.New("duplicate entry")
+		dupErrMsg, _ := json.Marshal(dupMktr)
+		return dupErrMsg, errors.New("duplicate entry")
 	}
 
 	return nil, nil
