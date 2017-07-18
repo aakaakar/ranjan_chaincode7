@@ -51,16 +51,16 @@ type MarketerStruct struct {
 }
 
 type AccountStruct struct {
-	AccountNumber              string `json:"AccountNumber"`
-	PolicyPrefix               string `json:"PolicyPrefix"`
-	InternalAccountName        string `json:"InternalAccountName"`
-	AccountStatus              string `json:"AccountStatus"`
-	AccountStatusEffectiveDate string `json:"AccountStatusEffectiveDate"`
-	ValidationStatus           string `json:"ValidationStatus"`
-	AccountEffectiveDate       string `json:"AccountEffectiveDate"`
-	MarketerProduct            string `json:"MarketerProduct"`
-	DisclosureStatus           string `json:"DisclosureStatus"`
-	DisclosureEffectiveDate    string `json:"DisclosureEffectiveDate"`
+	AccountNumber              string `json:"accountNumber"`
+	PolicyPrefix               string `json:"policyPrefix"`
+	InternalAccountName        string `json:"internalAccountName"`
+	AccountStatus              string `json:"accountStatus"`
+	AccountStatusEffectiveDate string `json:"accountStatusEffectiveDate"`
+	ValidationStatus           string `json:"validationStatus"`
+	AccountEffectiveDate       string `json:"accountEffectiveDate"`
+	MarketerProduct            string `json:"arketerProduct"`
+	DisclosureStatus           string `json:"disclosureStatus"`
+	DisclosureEffectiveDate    string `json:"disclosureEffectiveDate"`
 }
 
 type AssignmentStruct struct {
