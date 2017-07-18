@@ -289,7 +289,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	var retrievedStruct MarketerStruct
 	key = args[0]
 	retrievedBytes, err := stub.GetState(key)
-	json.Unmarshal(retrievedBytes, retrievedStruct)
+	json.Unmarshal(retrievedBytes, &retrievedStruct)
 
 	fmt.Println("Retrieved struct: ", retrievedStruct)
 
@@ -299,4 +299,43 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	return retrievedBytes, nil
+}
+
+func (t *SimpleChaincode) MyInvoke(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
+	fmt.Println("invoke is running " + function)
+
+	// Handle different functions
+	if function == "testaccount" {
+		return t.testaccount(stub, args)
+	}
+	fmt.Println(" My invoke did not find func: " + function)
+
+	return "", errors.New("Received unknown function invocation: " + function)
+}
+
+func (t *SimpleChaincode) testaccount(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+
+	var key string
+	var err error
+
+	accStruct := AccountStruct{
+		AccountNumber:              args[0],
+		PolicyPrefix:               args[1],
+		InternalAccountName:        args[2],
+		AccountStatus:              args[3],
+		AccountStatusEffectiveDate: args[4],
+		ValidationStatus:           args[5],
+		AccountEffectiveDate:       args[6],
+		MarketerProduct:            args[7],
+		DisclosureStatus:           args[8],
+		DisclosureEffectiveDate:    args[9],
+	}
+
+	accStructBytes, err := json.Marshal(accStruct)
+	_ = err //ignore errors
+	key = args[0]
+	stub.PutState(key, accStructBytes)
+	fmt.Println("*** successfully wrote my account to state")
+
+	return "My Account added succesfully!", nil
 }
