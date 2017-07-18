@@ -301,7 +301,7 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	return retrievedBytes, nil
 }
 
-func (t *SimpleChaincode) MyInvoke(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
+func (t *SimpleChaincode) invoke(stub shim.ChaincodeStubInterface, function string, args []string) (string, error) {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
