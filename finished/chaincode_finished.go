@@ -24,30 +24,30 @@ import (
 type isval []byte
 
 type MarketerStruct struct {
-	EId                   string `json:"EId"`
-	TaxId                 string `json:"TaxId"`
-	BeginDate             string `json:"BeginDate"`
-	MarketerTypeFlag      string `json:"MarketerTypeFlag"`
-	MarketerType          string `json:"MarketerType"`
-	MarketerRole          string `json:"MarketerRole"`
-	MarketerStatus        string `json:"MarketerStatus"`
-	LegalName             string `json:"LegalName"`
-	Gender                string `json:"Gender"`
-	DoB                   string `json:"DoB"`
-	RegStateName          string `json:"RegStateName"`
-	MarketerEffectiveDate string `json:"MarketerEffectiveDate"`
-	MarketerEndDate       string `json:"MarketerEndDate"`
-	FirstName             string `json:"FirstName"`
-	LastName              string `json:"LastName"`
-	BusinessAddress       string `json:"BusinessAddress"`
-	City                  string `json:"City"`
-	State                 string `json:"State"`
-	PostalCode            string `json:"PostalCode"`
-	PhoneNumber           string `json:"PhoneNumber"`
-	EMail                 string `json:"EMail"`
-	MarketerEaRole        string `json:"“MarketerEaRole”"`
-	OwnerRole             string `json:"OwnerRole"`
-	OrgName               string `json:"OrgName"`
+	EId                   string `json:"eId"`
+	TaxId                 string `json:"taxId"`
+	BeginDate             string `json:"beginDate"`
+	MarketerTypeFlag      string `json:"marketerTypeFlag"`
+	MarketerType          string `json:"marketerType"`
+	MarketerRole          string `json:"marketerRole"`
+	MarketerStatus        string `json:"marketerStatus"`
+	LegalName             string `json:"legalName"`
+	Gender                string `json:"gender"`
+	DoB                   string `json:"doB"`
+	RegStateName          string `json:"regStateName"`
+	MarketerEffectiveDate string `json:"marketerEffectiveDate"`
+	MarketerEndDate       string `json:"marketerEndDate"`
+	FirstName             string `json:"firstName"`
+	LastName              string `json:"lastName"`
+	BusinessAddress       string `json:"businessAddress"`
+	City                  string `json:"city"`
+	State                 string `json:"state"`
+	PostalCode            string `json:"postalCode"`
+	PhoneNumber           string `json:"phoneNumber"`
+	EMail                 string `json:"eMail"`
+	MarketerEaRole        string `json:"marketerEaRole"`
+	OwnerRole             string `json:"ownerRole"`
+	OrgName               string `json:"orgName"`
 }
 
 type AccountStruct struct {
@@ -58,41 +58,41 @@ type AccountStruct struct {
 	AccountStatusEffectiveDate string `json:"accountStatusEffectiveDate"`
 	ValidationStatus           string `json:"validationStatus"`
 	AccountEffectiveDate       string `json:"accountEffectiveDate"`
-	MarketerProduct            string `json:"arketerProduct"`
+	MarketerProduct            string `json:"marketerProduct"`
 	DisclosureStatus           string `json:"disclosureStatus"`
 	DisclosureEffectiveDate    string `json:"disclosureEffectiveDate"`
 }
 
 type AssignmentStruct struct {
-	AssignmentId            string `json:"AssignmentId"`
-	AssignmentRoleType      string `json:"AssignmentRoleType"`
-	SplitPercentage         string `json:"SplitPercentage"`
-	AssignmentEffectiveDate string `json:"AssignmentEffectiveDate"`
-	AssignmentStatus        string `json:"AssignmentStatus"`
-	AssignmentEndDate       string `json:"AssignmentEndDate"`
-	SplitEffectiveDate      string `json:"SplitEffectiveDate"`
-	OwnerEId                string `json:"OwnerEId"`
-	OwnerRole               string `json:"OwnerRole"`
-	OrgName                 string `json:"OrgName"`
-	policyPrefix            string `json:"policyPrefix"`
-	accountNumber           string `json:"accountNumber"`
-	EId                     string `json:"EId"`
-	TaxId                   string `json:"TaxId"`
-	BeginDate               string `json:"BeginDate"`
-	MarketerTypeFlag        string `json:"MarketerTypeFlag"`
-	MarketerType            string `json:"MarketerType"`
-	MarketerRole            string `json:"MarketerRole"`
-	MarketerStatus          string `json:"MarketerStatus"`
-	LegalName               string `json:"LegalName"`
-	Gender                  string `json:"Gender"`
-	DoB                     string `json:"DoB"`
-	RegStateName            string `json:"RegStateName"`
-	MarketerEffectiveDate   string `json:"MarketerEffectiveDate"`
-	MarketerEndDate         string `json:"MarketerEndDate"`
-	FirstName               string `json:"FirstName"`
-	LastName                string `json:"LastName"`
-	EMail                   string `json:"EMail"`
-	MarketerEaRole          string `json:"“MarketerEaRole”"`
+	AssignmentId            string `json:"assignmentId"`
+	AssignmentRoleType      string `json:"assignmentRoleType"`
+	SplitPercentage         string `json:"splitPercentage"`
+	AssignmentEffectiveDate string `json:"assignmentEffectiveDate"`
+	AssignmentStatus        string `json:"assignmentStatus"`
+	AssignmentEndDate       string `json:"assignmentEndDate"`
+	SplitEffectiveDate      string `json:"splitEffectiveDate"`
+	OwnerEId                string `json:"ownerEId"`
+	OwnerRole               string `json:"ownerRole"`
+	OrgName                 string `json:"orgName"`
+	PolicyPrefix            string `json:"policyPrefix"`
+	AccountNumber           string `json:"accountNumber"`
+	EId                     string `json:"eId"`
+	TaxId                   string `json:"taxId"`
+	BeginDate               string `json:"beginDate"`
+	MarketerTypeFlag        string `json:"marketerTypeFlag"`
+	MarketerType            string `json:"marketerType"`
+	MarketerRole            string `json:"marketerRole"`
+	MarketerStatus          string `json:"marketerStatus"`
+	LegalName               string `json:"legalName"`
+	Gender                  string `json:"gender"`
+	DoB                     string `json:"doB"`
+	RegStateName            string `json:"regStateName"`
+	MarketerEffectiveDate   string `json:"marketerEffectiveDate"`
+	MarketerEndDate         string `json:"marketerEndDate"`
+	FirstName               string `json:"firstName"`
+	LastName                string `json:"lastName"`
+	EMail                   string `json:"eMail"`
+	MarketerEaRole          string `json:"marketerEaRole"`
 }
 
 // SimpleChaincode example simple Chaincode implementation
@@ -204,9 +204,7 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 		return dupMktrArr, errors.New("duplicate entry")
 	}
 
-	successMsgArr := []byte("Marketer added succesfully!")
-
-	return successMsgArr, nil
+	return []byte("Marketer added succesfully!"), nil
 }
 
 func (t *SimpleChaincode) account(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
@@ -233,9 +231,7 @@ func (t *SimpleChaincode) account(stub shim.ChaincodeStubInterface, args []strin
 	stub.PutState(key, accStructBytes)
 	fmt.Println("*** successfully wrote account to state")
 
-	successMsgArr := []byte("Account added succesfully!")
-
-	return successMsgArr, nil
+	return []byte("Account added succesfully!"), nil
 }
 
 func (t *SimpleChaincode) assign(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
@@ -254,8 +250,8 @@ func (t *SimpleChaincode) assign(stub shim.ChaincodeStubInterface, args []string
 		OwnerEId:                args[7],
 		OwnerRole:               args[8],
 		OrgName:                 args[9],
-		policyPrefix:            args[10],
-		accountNumber:           args[11],
+		PolicyPrefix:            args[10],
+		AccountNumber:           args[11],
 		EId:                     args[12],
 		TaxId:                   args[13],
 		BeginDate:               args[14],
@@ -282,9 +278,7 @@ func (t *SimpleChaincode) assign(stub shim.ChaincodeStubInterface, args []string
 	stub.PutState(key, assignStructBytes)
 	fmt.Println("*** successfully wrote assignemt to state")
 
-	successMsgArr := []byte("Assignment added succesfully!")
-
-	return successMsgArr, nil
+	return []byte("Assignment added succesfully!"), nil
 }
 
 // read - query function to read key/value pair
